@@ -11,7 +11,6 @@ router.post(
   '/signUp',
   asyncMiddleWare(async (req, res) => {
     req.body.password = await encryptPassword(req.body.password);
-    req.body.userId = generateRandomUniqNumber();
     const user = new User(req.body);
     const [saveUser] = await user.saveUser();
     if (saveUser) {

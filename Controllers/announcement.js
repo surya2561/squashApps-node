@@ -41,10 +41,12 @@ router.post(
       const subject = 'Announcement';
       const html = `<div>Announcement for ${req.body.subject} created by ${getUser.firstName + ' ' + getUser.lastName}</div>`;
       let email = '';
+      console.log(req.body);
       if (req.body.notify == 'To All Members') {
+        console.log('dskjvsd');
         const [allEmail] = await User.getAllEmail(req.body.companyId);
         for (value of allEmail) {
-          email += value.email;
+          email += value.userId;
           email += ',';
         }
         const notify = new Notify([[req.body.announcementId, 'all']]);

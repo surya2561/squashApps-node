@@ -7,16 +7,9 @@ class User {
     this.user = user;
   }
   saveUser() {
-    if (this.user.firstName && this.user.lastName && this.user.email && this.user.companyId && this.user.password && this.user.userId) {
+    if (this.user.firstName && this.user.lastName && this.user.companyId && this.user.password && this.user.userId) {
       return dbConn
-        .execute(userQuery.SAVE_USER, [
-          this.user.firstName,
-          this.user.lastName,
-          this.user.email,
-          this.user.companyId,
-          this.user.password,
-          this.user.userId,
-        ])
+        .execute(userQuery.SAVE_USER, [this.user.firstName, this.user.lastName, this.user.companyId, this.user.password, this.user.userId])
         .then((success) => {
           return success;
         })

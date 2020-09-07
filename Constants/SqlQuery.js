@@ -5,10 +5,10 @@ const OtpQuery = () => {
 };
 
 const UserQuery = () => {
-  const CHECK_EMAIL = 'SELECT * FROM USERS WHERE email = ? AND active = 1';
-  const SAVE_USER = 'INSERT INTO USERS(firstName, lastName, email, companyId, password, userId) VALUES (?,?,?,?,?,?)';
-  const SIGN_IN = 'SELECT * FROM USERS WHERE email = ? AND password = ?';
-  const GET_ALL_EMAIL = 'SELECT email FROM USERS WHERE companyId = ?';
+  const CHECK_EMAIL = 'SELECT * FROM USERS WHERE userId = ?';
+  const SAVE_USER = 'INSERT INTO USERS(firstName, lastName, companyId, password, userId) VALUES (?,?,?,?,?)';
+  const SIGN_IN = 'SELECT * FROM USERS WHERE userId = ? AND password = ?';
+  const GET_ALL_EMAIL = 'SELECT userId FROM USERS WHERE companyId = ?';
   const GET_USER = 'SELECT * FROM USERS WHERE userId = ? AND companyId = ?';
   return { CHECK_EMAIL, SAVE_USER, SIGN_IN, GET_ALL_EMAIL, GET_USER };
 };
