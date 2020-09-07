@@ -1,6 +1,6 @@
 const nodemailer = require('nodemailer');
 const sendGridTransport = require('nodemailer-sendgrid-transport');
-const emailApiConstants = require('../constants/EmailApiConstants');
+const emailApiConstants = require('../Constants/EmailApiConstants');
 
 const transporter = nodemailer.createTransport(
   sendGridTransport({
