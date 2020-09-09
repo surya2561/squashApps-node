@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const { asyncMiddleWare } = require('../Delegates/AsyncMiddleware');
-const { generateRandomUniqNumber } = require('../Utils/GenerateOtp');
+const { generateRandomUniqNumber } = require('../Utils/GenerateRandomNumber');
 const Announcement = require('../Models/Announcement');
 const Event = require('../Models/Events');
 const Reminder = require('../Models/Reminder');
@@ -10,7 +10,7 @@ const Comment = require('../Models/CommentAnnouncement');
 const httpstatusCode = require('../Constants/HttpStatusCode');
 const { emailConfig } = require('../Utils/SendingEmail');
 const jwtToken = require('../Delegates/JwtToken');
-
+const responseMessageConstants = require('../Constants/responseMessageConstants');
 router.post(
   '/saveAnnouncement',
   [jwtToken.verifyJWT],
@@ -29,21 +29,19 @@ router.post(
         });
         const [saveEvents] = await event.saveEvents();
         if (!saveEvents) {
-          throw Error('Something bad happend');
+          throw Error(responseMessageConstants.SERVER_ERROR);
         }
       } else if (String(req.body.category).toLocaleLowerCase() == 'reminder') {
         const reminder = new Reminder({ date: req.body.date, announcementId: req.body.announcementId });
         const [saveReminder] = await reminder.saveReminder();
         if (!saveReminder) {
-          throw Error('Something bad happend');
+          throw Error(responseMessageConstants.SERVER_ERROR);
         }
       }
       const subject = 'Announcement';
       const html = `<div>Announcement for ${req.body.subject} created by ${getUser.firstName + ' ' + getUser.lastName}</div>`;
       let email = '';
-      console.log(req.body);
       if (req.body.notify == 'To All Members') {
-        console.log('dskjvsd');
         const [allEmail] = await User.getAllEmail(req.body.companyId);
         for (value of allEmail) {
           email += value.userId;
@@ -60,15 +58,14 @@ router.post(
         const notify = new Notify(notifyArray);
         const saveNotify = await notify.saveNotifyData();
       }
-      console.log(email);
       const sendingMail = await emailConfig(email, subject, html);
       if (sendingMail.message == 'success') {
         res.status(httpstatusCode.SUCCESS).json({ message: 'Announcement Saved and notified to members' });
       } else {
-        throw Error('Something bad happend');
+        throw Error(responseMessageConstants.SERVER_ERROR);
       }
     } else {
-      throw Error('Something bad happend');
+      throw Error(responseMessageConstants.SERVER_ERROR);
     }
   })
 );
@@ -81,7 +78,7 @@ router.post(
     if (getAnnouncements) {
       res.status(httpstatusCode.SUCCESS).json({ announcementData: getAnnouncements });
     } else {
-      throw Error('Something bad happend');
+      throw Error(responseMessageConstants.SERVER_ERROR);
     }
   })
 );
@@ -95,7 +92,7 @@ router.post(
     if (saveComment) {
       res.status(httpstatusCode.SUCCESS).json({ message: 'Comments saved' });
     } else {
-      throw Error('Something bad happend');
+      throw Error(responseMessageConstants.SERVER_ERROR);
     }
   })
 );
@@ -108,7 +105,7 @@ router.post(
     if (getComments) {
       res.status(httpstatusCode.SUCCESS).json({ comments: getComments });
     } else {
-      throw Error('Something bad happend');
+      throw Error(responseMessageConstants.SERVER_ERROR);
     }
   })
 );

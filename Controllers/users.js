@@ -5,8 +5,7 @@ const User = require('../Models/Users');
 const httpstatusCode = require('../Constants/HttpStatusCode');
 const verifyEmail = require('../Delegates/VerifyEmail');
 const jwtToken = require('../Delegates/JwtToken');
-const { generateRandomUniqNumber } = require('../Utils/GenerateOtp');
-
+const responseMessageConstants = require('../Constants/responseMessageConstants');
 router.post(
   '/signUp',
   asyncMiddleWare(async (req, res) => {
@@ -16,7 +15,7 @@ router.post(
     if (saveUser) {
       res.status(httpstatusCode.SUCCESS).json({ message: 'User saved successfully' });
     } else {
-      throw Error('Something bad happend');
+      throw Error(responseMessageConstants.SERVER_ERROR);
     }
   })
 );

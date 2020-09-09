@@ -28,7 +28,6 @@ class Otp {
           return success;
         })
         .catch((error) => {
-          console.log(error);
           throw Error(error);
         });
     } else {
